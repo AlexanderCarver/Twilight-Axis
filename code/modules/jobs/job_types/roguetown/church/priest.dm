@@ -19,7 +19,7 @@ GLOBAL_LIST_EMPTY(heretical_players)
 	selection_color = JCOLOR_CHURCH
 	f_title = "Bishop"
 	allowed_races = RACES_NO_CONSTRUCT		//Too recent arrivals to ascend to priesthood.
-	allowed_patrons = ALL_DIVINE_PATRONS
+	allowed_patrons = list(/datum/patron/divine/undivided)
 	allowed_sexes = list(MALE, FEMALE)
 	tutorial = "The Divine is all that matters in a world of the immoral. The Weeping God abandoned us, and in his stead the TEN rule over us mortals--and you will preach their wisdom to any who still heed their will. The faithless are growing in number. It is up to you to shepherd them toward a Gods-fearing future; for you are a Bishop of the Holy See."
 	whitelist_req = FALSE
@@ -175,7 +175,7 @@ GLOBAL_LIST_EMPTY(heretical_players)
 			/obj/effect/proc_holder/spell/invoked/heal,
 			// Noc
 			/obj/effect/proc_holder/spell/invoked/noc_sight,
-			/obj/effect/proc_holder/spell/targeted/touch/darkvision/miracle,
+			/obj/effect/proc_holder/spell/invoked/darkvision/miracle,
 			/obj/effect/proc_holder/spell/invoked/invisibility/miracle,
 			// Dendor
 			/obj/effect/proc_holder/spell/invoked/spiderspeak,
@@ -613,7 +613,7 @@ code\modules\admin\verbs\divinewrath.dm has a variant with all the gods so keep 
 /obj/effect/proc_holder/spell/invoked/convert_heretic_priest
 	name = "Absolve the Heretic"
 	desc = "Convert a heretic back to the fold of the church. Requires the heretic to be willing, and takes a long time to cast."
-	invocation = "Show this lost sheep the way back to the flock."
+	invocations = list("Show this lost sheep the way back to the flock.")
 	invocation_type = "whisper"
 	sound = 'sound/magic/bless.ogg'
 	devotion_cost = 100

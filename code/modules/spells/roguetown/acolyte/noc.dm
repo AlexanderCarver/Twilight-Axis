@@ -15,7 +15,7 @@
 	movement_interrupt = FALSE
 	sound = 'sound/magic/churn.ogg'
 	spell_tier = 2 // Combat spell
-	invocation = "Noc blinds thee of thy sins!"
+	invocations = list("Noc blinds thee of thy sins!")
 	invocation_type = "shout" //can be none, whisper, emote and shout
 	associated_skill = /datum/skill/magic/holy
 	devotion_cost = 15
@@ -103,7 +103,7 @@
 		/obj/effect/proc_holder/spell/invoked/blink::name 				= /obj/effect/proc_holder/spell/invoked/blink,
 	)
 	var/list/offensive_bundle = list(	//This is not meant to make them combat-capable. A weak offensive, and mostly defensive option.
-		/obj/effect/proc_holder/spell/invoked/projectile/guided_bolt,
+		/obj/effect/proc_holder/spell/invoked/projectile/arcynebolt, // PLACEHOLDER
 		/obj/effect/proc_holder/spell/self/conjure_armor/miracle,
 		/obj/effect/proc_holder/spell/invoked/conjure_weapon/miracle,
 		/obj/effect/proc_holder/spell/invoked/rebuke,
@@ -173,7 +173,7 @@
 	range = 7
 	warnie = "sydwarning"
 	movement_interrupt = FALSE
-	invocation = "Noc guide my gaze."
+	invocations = list("Noc guide my gaze.")
 	invocation_type = "whisper"
 	sound = null
 	associated_skill = /datum/skill/magic/holy
