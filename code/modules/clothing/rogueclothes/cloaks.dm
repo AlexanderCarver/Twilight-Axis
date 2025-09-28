@@ -119,7 +119,7 @@
 	open_wear = TRUE
 
 
-/obj/item/clothing/cloak/psydontabard/MiddleClick(mob/user) 
+/obj/item/clothing/cloak/psydontabard/MiddleClick(mob/user)
 	overarmor = !overarmor
 	to_chat(user, span_info("I [overarmor ? "wear the tabard over my armor" : "wear the tabard under my armor"]."))
 	if(overarmor)
@@ -371,13 +371,13 @@
 		return
 	picked = TRUE
 
-/obj/item/clothing/cloak/tabard/knight/guard
+/obj/item/clothing/cloak/tabard/retinue
 	desc = "A tabard with the lord's heraldic colors."
 	color = CLOTHING_AZURE
-	detail_tag = "_spl"
+	detail_tag = "_quad"
 	detail_color = CLOTHING_WHITE
 
-/obj/item/clothing/cloak/tabard/knight/guard/attack_right(mob/user)
+/obj/item/clothing/cloak/tabard/retinue/attack_right(mob/user)
 	if(picked)
 		return
 	var/the_time = world.time
@@ -408,13 +408,25 @@
 		return
 	picked = TRUE
 
-/obj/item/clothing/cloak/tabard/knight/guard/Initialize()
+/obj/item/clothing/cloak/tabard/retinue/Initialize()
 	. = ..()
 	if(GLOB.lordprimary)
 		lordcolor(GLOB.lordprimary,GLOB.lordsecondary)
 	GLOB.lordcolor += src
 
-/obj/item/clothing/cloak/tabard/knight/guard/update_icon()
+/obj/item/clothing/cloak/tabard/retinue/lordcolor(primary,secondary)
+	color = primary
+	detail_color = secondary
+	update_icon()
+	if(ismob(loc))
+		var/mob/L = loc
+		L.update_inv_cloak()
+
+/obj/item/clothing/cloak/tabard/retinue/Destroy()
+	GLOB.lordcolor -= src
+	return ..()
+
+/obj/item/clothing/cloak/tabard/retinue/update_icon()
 	cut_overlays()
 	if(get_detail_tag())
 		var/mutable_appearance/pic = mutable_appearance(icon(icon, "[icon_state][detail_tag]"))
@@ -423,18 +435,8 @@
 			pic.color = get_detail_color()
 		add_overlay(pic)
 
-/obj/item/clothing/cloak/tabard/knight/guard/lordcolor(primary,secondary)
-	color = primary
-	detail_color = secondary
-	update_icon()
-	if(ismob(loc))
-		var/mob/L = loc
-		L.update_inv_cloak()
-
-/obj/item/clothing/cloak/tabard/knight/guard/Destroy()
-	GLOB.lordcolor -= src
-	return ..()
-
+/obj/item/clothing/cloak/tabard/retinue/captain //Because of his other snowflake cloak we can't actually use the naming normally.
+	name = "captain's tabard"
 
 //////////////////////////
 /// SOLDIER TABARD
@@ -468,7 +470,7 @@
 		for(var/obj/item/I in things)
 			STR.remove_from_storage(I, get_turf(src))
 
-/obj/item/clothing/cloak/stabard/MiddleClick(mob/user) 
+/obj/item/clothing/cloak/stabard/MiddleClick(mob/user)
 	overarmor = !overarmor
 	to_chat(user, span_info("I [overarmor ? "wear the tabard over my armor" : "wear the tabard under my armor"]."))
 	if(overarmor)
@@ -931,11 +933,6 @@
 	toggle_icon_state = FALSE
 	salvage_result = /obj/item/natural/hide/cured
 
-/obj/item/clothing/wash_act(clean)
-	. = ..()
-	if(hood)
-		wash_atom(hood,clean)
-
 /obj/item/clothing/cloak/raincloak/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/roguetown/cloak)
@@ -982,14 +979,6 @@
 	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDETAIL
 	block2add = FOV_BEHIND
 
-/obj/item/clothing/head/hooded/equipped(mob/user, slot)
-	. = ..()
-	user.update_fov_angles()
-
-/obj/item/clothing/head/hooded/dropped(mob/user)
-	. = ..()
-	user.update_fov_angles()
-
 /obj/item/clothing/cloak/raincloak/furcloak
 	name = "fur cloak"
 	desc = "This glorious cloak is made of animal fur. Very soft and warm."
@@ -1008,7 +997,7 @@
 
 /obj/item/clothing/cloak/raincloak/furcloak/black
 	color = "#2b292e"
-	
+
 /obj/item/clothing/cloak/raincloak/furcloak/darkgreen
 	color = "#264d26"
 
@@ -1034,6 +1023,9 @@
 	nodismemsleeves = TRUE
 	inhand_mod = FALSE
 	slot_flags = ITEM_SLOT_BACK_R|ITEM_SLOT_CLOAK
+
+/obj/item/clothing/cloak/cape/purple
+	color = CLOTHING_PURPLE
 
 /obj/item/clothing/cloak/cape/knight
 	color = CLOTHING_WHITE
@@ -1276,6 +1268,9 @@
 		for(var/obj/item/I in things)
 			STR.remove_from_storage(I, get_turf(src))
 
+/obj/item/clothing/cloak/thief_cloak/yoruku
+	color = CLOTHING_BLACK
+
 /obj/item/clothing/cloak/templar
 	var/overarmor = TRUE
 
@@ -1467,8 +1462,8 @@
 	alternate_worn_layer = TABARD_LAYER
 	body_parts_covered = CHEST|GROIN
 	slot_flags = ITEM_SLOT_ARMOR|ITEM_SLOT_CLOAK
-	
-/obj/item/clothing/cloak/templar/MiddleClick(mob/user) 
+
+/obj/item/clothing/cloak/templar/MiddleClick(mob/user)
 	overarmor = !overarmor
 	to_chat(user, span_info("I [overarmor ? "wear the tabard over my armor" : "wear the tabard under my armor"]."))
 	if(overarmor)
@@ -1605,12 +1600,12 @@
 		active_item = TRUE
 		if(user.mind.special_role == "Bandit")
 			to_chat(user, span_notice("I feel bolstered by Matthios' Power!"))
-			user.change_stat("strength", 2)
-			user.change_stat("perception", 2)
-			user.change_stat("intelligence", 2)
-			user.change_stat("constitution", 2)
-			user.change_stat("endurance", 2)
-			user.change_stat("speed", 2)
+			user.change_stat(STATKEY_STR, 2)
+			user.change_stat(STATKEY_PER, 2)
+			user.change_stat(STATKEY_INT, 2)
+			user.change_stat(STATKEY_CON, 2)
+			user.change_stat(STATKEY_WIL, 2)
+			user.change_stat(STATKEY_SPD, 2)
 			armor = getArmor("blunt" = 100, "slash" = 100, "stab" = 100, "piercing" = 100, "fire" = 50, "acid" = 0)
 		else
 			to_chat(user, span_notice("I feel an evil power about that necklace..."))
@@ -1623,12 +1618,12 @@
 	active_item = FALSE
 	if(user.mind.special_role == "Bandit")
 		to_chat(user, span_notice("I've removed the necklace of Matthios..."))
-		user.change_stat("strength", -2)
-		user.change_stat("perception", -2)
-		user.change_stat("intelligence", -2)
-		user.change_stat("constitution", -2)
-		user.change_stat("endurance", -2)
-		user.change_stat("speed", -2)
+		user.change_stat(STATKEY_STR, -2)
+		user.change_stat(STATKEY_PER, -2)
+		user.change_stat(STATKEY_INT, -2)
+		user.change_stat(STATKEY_CON, -2)
+		user.change_stat(STATKEY_WIL, -2)
+		user.change_stat(STATKEY_SPD, -2)
 	else
 		to_chat(user, span_notice("Strange, I don't feel that power anymore..."))
 		armor = getArmor("blunt" = 100, "slash" = 100, "stab" = 100, "piercing" = 100, "fire" = 50, "acid" = 0)
@@ -1717,7 +1712,7 @@
 	return ..()
 
 /obj/item/clothing/cloak/stabard/guardhood/elder
-	name = "elder's hood"	
+	name = "elder's hood"
 
 /obj/item/clothing/cloak/hierophant
 	name = "hierophant's sash"
@@ -1736,6 +1731,16 @@
 		var/list/things = STR.contents()
 		for(var/obj/item/I in things)
 			STR.remove_from_storage(I, get_turf(src))
+
+/obj/item/clothing/cloak/stabard/grenzelmage
+	name = "grenzelhoftian magos mantle"
+	desc = "A fashionable Mantle often worn by Celestial Academy Magos."
+	color = CLOTHING_WHITE
+	detail_color = CLOTHING_WHITE
+	detail_tag = "_spl"
+	icon_state = "guard_hood" // The same as the guard hood however to break it from using the lords colors it has been given its own item path
+	item_state = "guard_hood"
+	body_parts_covered = CHEST
 
 /obj/item/clothing/cloak/wardencloak
 	name = "warden cloak"
