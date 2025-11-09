@@ -1,5 +1,3 @@
-#define GARRISON_CROWN_COLOR "#E0E0E0"
-
 /obj/item/clothing/head/roguetown/crown/silvercrown
 	name = "Crown of the Silver Blood"
 	article = "the"
@@ -87,7 +85,7 @@
 		"timestamp" = station_time_timestamp("hh:mm:ss")
 		))
 	if(garrisonline)
-		input_text = "<big><span style='color: [GARRISON_CROWN_COLOR]'>[input_text]</span></big>"
+		input_text = "<big><span style='color: #E0E0E0'>[input_text]</span></big>"
 		for(var/obj/item/scomstone/bad/garrison/S in SSroguemachine.scomm_machines)
 			S.repeat_message(input_text, src, usedcolor)
 		for(var/obj/item/scomstone/garrison/S in SSroguemachine.scomm_machines)
