@@ -311,11 +311,12 @@
 				S.repeat_message(raw_message, src, usedcolor, message_language)
 			for(var/obj/item/scomstone/bad/garrison/S in SSroguemachine.scomm_machines)
 				S.repeat_message(raw_message, src, usedcolor, message_language)
-			for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
-				if(S.garrisonline)
-					S.repeat_message(raw_message, src, usedcolor, message_language)
-			SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
-			return
+		for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
+			if(S.garrisonline)
+				S.repeat_message(raw_message, src, usedcolor, message_language)
+		SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
+		SSroguemachine.custom_crown?.repeat_message(raw_message, src, usedcolor, message_language)
+		return
 		#ifndef USES_SCOM_RESTRICTION
 		else 
 			for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
@@ -323,10 +324,11 @@
 					S.repeat_message(raw_message, src, usedcolor, message_language)
 			for(var/obj/item/scomstone/S in SSroguemachine.scomm_machines)
 				S.repeat_message(raw_message, src, usedcolor, message_language)
-			for(var/obj/item/listenstone/S in SSroguemachine.scomm_machines)
-				S.repeat_message(raw_message, src, usedcolor, message_language)//make the listenstone hear scom
-			SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
-		#endif
+		for(var/obj/item/listenstone/S in SSroguemachine.scomm_machines)
+			S.repeat_message(raw_message, src, usedcolor, message_language)//make the listenstone hear scom
+		SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
+		SSroguemachine.custom_crown?.repeat_message(raw_message, src, usedcolor, message_language)
+	#endif
 
 /obj/structure/roguemachine/scomm/proc/dictate_laws()
 	if(dictating)
@@ -406,6 +408,7 @@
 	for(var/obj/item/listenstone/S in SSroguemachine.scomm_machines) //make the listenstone hear scomstone
 		S.repeat_message(input_text, src, usedcolor)
 	SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
+	SSroguemachine.custom_crown?.repeat_message(input_text, src, usedcolor)
 	on_cooldown = TRUE
 	addtimer(CALLBACK(src, PROC_REF(reset_cooldown), user), cooldown)
 
@@ -902,13 +905,14 @@
 			S.repeat_message(input_text, src, usedcolor)
 		for(var/obj/item/scomstone/garrison/S in SSroguemachine.scomm_machines)
 			S.repeat_message(input_text, src, usedcolor)
-		for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
-			if(S.garrisonline)
-				S.repeat_message(input_text, src, usedcolor)
-		SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
-		on_cooldown = TRUE
-		addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)
-		return
+	for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
+		if(S.garrisonline)
+			S.repeat_message(input_text, src, usedcolor)
+	SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
+	SSroguemachine.custom_crown?.repeat_message(input_text, src, usedcolor)
+	on_cooldown = TRUE
+	addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)
+	return
 	for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
 		S.repeat_message(input_text, src, usedcolor)
 	for(var/obj/item/scomstone/S in SSroguemachine.scomm_machines)
@@ -916,6 +920,7 @@
 	for(var/obj/item/listenstone/S in SSroguemachine.scomm_machines)
 		S.repeat_message(input_text, src, usedcolor)
 	SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
+	SSroguemachine.custom_crown?.repeat_message(input_text, src, usedcolor)
 	on_cooldown = TRUE
 	
 	//Log messages that aren't sent on the garrison line.
@@ -1026,6 +1031,9 @@
 	var/obj/item/clothing/head/roguetown/crown/serpcrown/crowne = SSroguemachine.crown
 	if(crowne && (!loudmouth || crowne.loudmouth_listening))
 		crowne.repeat_message(raw_message, src, usedcolor, message_language, tspans)
+	var/obj/item/clothing/head/roguetown/crown/silvercrown/custom_crowne = SSroguemachine.custom_crown
+	if(custom_crowne && (!loudmouth || custom_crowne.loudmouth_listening))
+		custom_crowne.repeat_message(raw_message, src, usedcolor, message_language, tspans)
 	if(istype(src, /obj/structure/broadcast_horn/paid))
 		listening = FALSE
 		playsound(src, 'sound/misc/machinelong.ogg', 100, FALSE, -1)

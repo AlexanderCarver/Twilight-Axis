@@ -79,3 +79,29 @@
 	name = "'Weeper's Lathe' morphing elixir"
 	target_items = list(/obj/item/rogueweapon/greatsword)		// i, uh. i really do promise i'm only gonna use it on steel greatswords.
 	result_item = /obj/item/rogueweapon/greatsword/weeperslathe
+
+// Conqueror's Armor Set - greenrake
+/obj/item/enchantingkit/conqueror_helmet
+	name = "'Conqueror's Helmet' morphing elixir"
+	target_items = list(/obj/item/clothing/head/roguetown/helmet/blacksteel/modern/armet)
+	result_item = /obj/item/clothing/head/roguetown/helmet/blacksteel/modern/conquerorhelmet
+
+/obj/item/enchantingkit/conqueror_armor
+	name = "'Conqueror's Armor' morphing elixir"
+	target_items = list(/obj/item/clothing/suit/roguetown/armor/plate/modern/blacksteel_full_plate)
+	result_item = /obj/item/clothing/suit/roguetown/armor/plate/modern/conquerorarmor
+
+/obj/item/enchantingkit/conqueror_gloves
+	name = "'Conqueror's Gauntlets' morphing elixir"
+	target_items = list(/obj/item/clothing/gloves/roguetown/blacksteel/modern/plategloves)
+	result_item = /obj/item/clothing/gloves/roguetown/blacksteel/modern/conquerorgloves
+
+/obj/item/enchantingkit/conqueror_chausses
+	name = "'Conqueror's Chausses' morphing elixir"
+	target_items = list(/obj/item/clothing/under/roguetown/platelegs/blacksteel/modern)
+	result_item = /obj/item/clothing/under/roguetown/platelegs/blacksteel/conquerorchausses
+
+/obj/item/enchantingkit/conqueror_boots
+	name = "'Conqueror's Boots' morphing elixir"
+	target_items = list(/obj/item/clothing/shoes/roguetown/boots/blacksteel/modern/plateboots)
+	result_item = /obj/item/clothing/shoes/roguetown/boots/blacksteel/modern/conquerorboots

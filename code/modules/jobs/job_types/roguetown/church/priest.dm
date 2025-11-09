@@ -173,7 +173,7 @@ GLOBAL_LIST_EMPTY(heretical_players)
 			continue
 		if(!HU.head)
 			continue
-		if(!istype(HU.head, /obj/item/clothing/head/roguetown/crown/serpcrown))
+		if(!istype(HU.head, /obj/item/clothing/head/roguetown/crown/serpcrown) && !istype(HU.head, /obj/item/clothing/head/roguetown/crown/silvercrown))
 			continue
 
 		//Abdicate previous King

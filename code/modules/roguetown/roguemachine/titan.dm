@@ -59,7 +59,7 @@ GLOBAL_VAR_INIT(last_crown_announcement_time, -1000)
 		return
 	var/mob/living/carbon/human/H = speaker
 	var/nocrown
-	if(!istype(H.head, /obj/item/clothing/head/roguetown/crown/serpcrown))
+	if(!istype(H.head, /obj/item/clothing/head/roguetown/crown/serpcrown) && !istype(H.head, /obj/item/clothing/head/roguetown/crown/silvercrown))
 		nocrown = TRUE
 	var/notlord = TRUE
 	if(SSticker.rulermob == H || SSticker.regentmob == H)
@@ -70,44 +70,86 @@ GLOBAL_VAR_INIT(last_crown_announcement_time, -1000)
 			mode = 0
 			return
 	if(findtext(message, "summon crown")) //This must never fail, thus place it before all other modestuffs.
-		if(!SSroguemachine.crown)
-			new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
-			say("The crown is summoned!")
-			playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
-			playsound(src, 'sound/misc/hiss.ogg', 100, FALSE, -1)
-		if(SSroguemachine.crown)
-			var/obj/item/clothing/head/roguetown/crown/serpcrown/I = SSroguemachine.crown
-			if(!I)
-				I = new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
-			if(I && !ismob(I.loc))//You MUST MUST MUST keep the Crown on a person to prevent it from being summoned (magical interference)
-				var/area/crown_area = get_area(I)
-				if(crown_area && istype(crown_area, /area/rogue/indoors/town/vault) && notlord) //Anti throat snipe from vault
-					say("The crown is within the vault.")
+		var/is_greenrake = (H.ckey == "greenrake")
+		
+		if(is_greenrake)
+			if(!SSroguemachine.custom_crown)
+				new /obj/item/clothing/head/roguetown/crown/silvercrown(src.loc)
+				say("The Crown of the Silver Blood is summoned!")
+				playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+				playsound(src, 'sound/magic/holycharging.ogg', 60, TRUE)
+			if(SSroguemachine.custom_crown)
+				var/obj/item/clothing/head/roguetown/crown/silvercrown/I = SSroguemachine.custom_crown
+				if(!I)
+					I = new /obj/item/clothing/head/roguetown/crown/silvercrown(src.loc)
+				if(I && !ismob(I.loc))
+					var/area/crown_area = get_area(I)
+					if(crown_area && istype(crown_area, /area/rogue/indoors/town/vault) && notlord)
+						say("The silver crown is within the vault.")
+						playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+						return
+					I.anti_stall()
+					I = new /obj/item/clothing/head/roguetown/crown/silvercrown(src.loc)
+					say("The Crown of the Silver Blood is summoned!")
 					playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+					playsound(src, 'sound/magic/holycharging.ogg', 60, TRUE)
 					return
-				I.anti_stall()
-				I = new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
+				if(ishuman(I.loc))
+					var/mob/living/carbon/human/HC = I.loc
+					if(HC.stat != DEAD)
+						if(I in HC.held_items)
+							say("[HC.real_name] holds the silver crown!")
+							playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+							return
+						if(HC.head == I)
+							say("[HC.real_name] wears the silver crown!")
+							playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+							return
+					else
+						HC.dropItemToGround(I, TRUE)
+				I.forceMove(src.loc)
+				say("The Crown of the Silver Blood is summoned!")
+				playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+				playsound(src, 'sound/magic/holycharging.ogg', 60, TRUE)
+		else
+			if(!SSroguemachine.crown)
+				new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
 				say("The crown is summoned!")
 				playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
 				playsound(src, 'sound/misc/hiss.ogg', 100, FALSE, -1)
-				return
-			if(ishuman(I.loc))
-				var/mob/living/carbon/human/HC = I.loc
-				if(HC.stat != DEAD)
-					if(I in HC.held_items)
-						say("[HC.real_name] holds the crown!")
+			if(SSroguemachine.crown)
+				var/obj/item/clothing/head/roguetown/crown/serpcrown/I = SSroguemachine.crown
+				if(!I)
+					I = new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
+				if(I && !ismob(I.loc))
+					var/area/crown_area = get_area(I)
+					if(crown_area && istype(crown_area, /area/rogue/indoors/town/vault) && notlord)
+						say("The crown is within the vault.")
 						playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
 						return
-					if(HC.head == I)
-						say("[HC.real_name] wears the crown!")
-						playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
-						return
-				else
-					HC.dropItemToGround(I, TRUE) //If you're dead, forcedrop it, then move it.
-			I.forceMove(src.loc)
-			say("The crown is summoned!")
-			playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
-			playsound(src, 'sound/misc/hiss.ogg', 100, FALSE, -1)
+					I.anti_stall()
+					I = new /obj/item/clothing/head/roguetown/crown/serpcrown(src.loc)
+					say("The crown is summoned!")
+					playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+					playsound(src, 'sound/misc/hiss.ogg', 100, FALSE, -1)
+					return
+				if(ishuman(I.loc))
+					var/mob/living/carbon/human/HC = I.loc
+					if(HC.stat != DEAD)
+						if(I in HC.held_items)
+							say("[HC.real_name] holds the crown!")
+							playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+							return
+						if(HC.head == I)
+							say("[HC.real_name] wears the crown!")
+							playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+							return
+					else
+						HC.dropItemToGround(I, TRUE)
+				I.forceMove(src.loc)
+				say("The crown is summoned!")
+				playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
+				playsound(src, 'sound/misc/hiss.ogg', 100, FALSE, -1)
 	if(findtext(message, "summon key"))
 		if(nocrown)
 			say("You need the crown.")

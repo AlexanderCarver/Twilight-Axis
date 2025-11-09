@@ -597,3 +597,28 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Donator Kit - Weeper's Lathe"
 	path = /obj/item/enchantingkit/waff
 	ckeywhitelist = list("waffai")
+
+/datum/loadout_item/donator_conqueror_helmet
+	name = "Donator Kit - Conqueror's Helmet"
+	path = /obj/item/enchantingkit/conqueror_helmet
+	ckeywhitelist = list("greenrake")
+
+/datum/loadout_item/donator_conqueror_armor
+	name = "Donator Kit - Conqueror's Armor"
+	path = /obj/item/enchantingkit/conqueror_armor
+	ckeywhitelist = list("greenrake")
+
+/datum/loadout_item/donator_conqueror_gloves
+	name = "Donator Kit - Conqueror's Gauntlets"
+	path = /obj/item/enchantingkit/conqueror_gloves
+	ckeywhitelist = list("greenrake")
+
+/datum/loadout_item/donator_conqueror_chausses
+	name = "Donator Kit - Conqueror's Chausses"
+	path = /obj/item/enchantingkit/conqueror_chausses
+	ckeywhitelist = list("greenrake")
+
+/datum/loadout_item/donator_conqueror_boots
+	name = "Donator Kit - Conqueror's Boots"
+	path = /obj/item/enchantingkit/conqueror_boots
+	ckeywhitelist = list("greenrake")
