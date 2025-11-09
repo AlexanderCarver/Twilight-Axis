@@ -2797,6 +2797,8 @@
 #include "modular_azurepeak\code\game\objects\items\cosmetics.dm"
 #include "modular_azurepeak\code\game\objects\items\donator_fluff_items.dm"
 #include "modular_azurepeak\code\game\objects\items\donator_modkit.dm"
+#include "modular_azurepeak\code\game\objects\items\rake\oldastrataarmor.dm"
+#include "modular_azurepeak\code\game\objects\items\rake\silvercrown.dm"
 #include "modular_azurepeak\code\game\objects\items\magic_staffs.dm"
 #include "modular_azurepeak\code\game\objects\items\mercmedals.dm"
 #include "modular_azurepeak\code\game\objects\items\mundanities.dm"
