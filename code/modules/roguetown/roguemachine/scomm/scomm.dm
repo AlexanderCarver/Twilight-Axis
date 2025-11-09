@@ -362,11 +362,12 @@
 				S.repeat_message(raw_message, src, usedcolor, message_language)
 			for(var/obj/item/scomstone/bad/garrison/S in SSroguemachine.scomm_machines)
 				S.repeat_message(raw_message, src, usedcolor, message_language)
-			for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
-				if(S.garrisonline)
-					S.repeat_message(raw_message, src, usedcolor, message_language)
-			SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
-			return
+		for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
+			if(S.garrisonline)
+				S.repeat_message(raw_message, src, usedcolor, message_language)
+		SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
+		SSroguemachine.custom_crown?.repeat_message(raw_message, src, usedcolor, message_language)
+		return
 		else
 			addtimer(CALLBACK(src, PROC_REF(repeat_message_scom), raw_message, usedcolor, message_language), NORMAL_SCOM_TRANSMISSION_DELAY)
 
@@ -380,6 +381,7 @@
 	for(var/obj/item/listenstone/S in SSroguemachine.scomm_machines)
 		S.repeat_message(raw_message, src, usedcolor, message_language)//make the listenstone hear scom
 	SSroguemachine.crown?.repeat_message(raw_message, src, usedcolor, message_language)
+	SSroguemachine.custom_crown?.repeat_message(raw_message, src, usedcolor, message_language)
 
 /obj/structure/roguemachine/scomm/proc/dictate_laws()
 	if(dictating)

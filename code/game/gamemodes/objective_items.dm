@@ -42,4 +42,4 @@
 	targetitem = /obj/item/clothing/head/roguetown/crown/serpcrown
 	difficulty = 3
 	excludefromjob = list("Grand Duke", "Suitor", "Knight")
-	altitems = list(/obj/item/clothing/head/roguetown/crown/silvercrown) // На случай кастомных корон
+	altitems = list(/obj/item/clothing/head/roguetown/crown/silvercrown)

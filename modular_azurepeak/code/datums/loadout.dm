@@ -807,29 +807,38 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	ckeywhitelist = list("waffai")
 
 /datum/loadout_item/donator_conqueror_helmet
-	name = "Donator Kit - Conqueror's Helmet"
+	name = "Donator Kit - Conqueror's Helmet - Required: Blacksteel Armet"
+	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_helmet
-	ckeywhitelist = list("greenrake")
+	ckeywhitelist = list("greenrake", "darksungwyndolin")
+	donatitem = TRUE
 
 /datum/loadout_item/donator_conqueror_armor
-	name = "Donator Kit - Conqueror's Armor"
+	name = "Donator Kit - Conqueror's Armor - Required: Blacksteel Full-Plate"
+	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_armor
-	ckeywhitelist = list("greenrake")
+	ckeywhitelist = list("greenrake", "darksungwyndolin")
+	donatitem = TRUE
 
 /datum/loadout_item/donator_conqueror_gloves
-	name = "Donator Kit - Conqueror's Gauntlets"
+	name = "Donator Kit - Conqueror's Gauntlets - Required: Blacksteel Plate Gauntlets"
+	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_gloves
-	ckeywhitelist = list("greenrake")
+	ckeywhitelist = list("greenrake", "darksungwyndolin")
+	donatitem = TRUE
 
 /datum/loadout_item/donator_conqueror_chausses
-	name = "Donator Kit - Conqueror's Chausses"
+	name = "Donator Kit - Conqueror's Chausses - Required: Blacksteel Plate Chausses"
+	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_chausses
-	ckeywhitelist = list("greenrake")
+	ckeywhitelist = list("greenrake", "darksungwyndolin")
+	donatitem = TRUE
 
 /datum/loadout_item/donator_conqueror_boots
-	name = "Donator Kit - Conqueror's Boots"
+	name = "Donator Kit - Conqueror's Boots - Required: Blacksteel Plate Boots"
+	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_boots
-	ckeywhitelist = list("greenrake")
+	ckeywhitelist = list("greenrake", "darksungwyndolin")
 	donatitem = TRUE
 
 /datum/loadout_item/donator_inverserun

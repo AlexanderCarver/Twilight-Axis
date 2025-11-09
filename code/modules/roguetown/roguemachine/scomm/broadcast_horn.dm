@@ -79,6 +79,9 @@
 	var/obj/item/clothing/head/roguetown/crown/serpcrown/crowne = SSroguemachine.crown
 	if(crowne && (!loudmouth || crowne.loudmouth_listening))
 		crowne.repeat_message(raw_message, src, usedcolor, message_language, tspans)
+	var/obj/item/clothing/head/roguetown/crown/silvercrown/custom_crowne = SSroguemachine.custom_crown
+	if(custom_crowne && (!loudmouth || custom_crowne.loudmouth_listening))
+		custom_crowne.repeat_message(raw_message, src, usedcolor, message_language, tspans)
 	if(istype(src, /obj/structure/broadcast_horn/paid))
 		listening = FALSE
 		playsound(src, 'sound/misc/machinelong.ogg', 100, FALSE, -1)

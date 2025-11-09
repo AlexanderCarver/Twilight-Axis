@@ -85,14 +85,6 @@ GLOBAL_LIST_EMPTY(lord_titles)
 			to_chat(H, span_warning("My ancestral crown must be yet in the realm. I shall search it out."))
 	else
 		if(!SSroguemachine.crown || QDELETED(SSroguemachine.crown))
-		if(SSroguemachine.custom_crown == null || (QDELETED(SSroguemachine.custom_crown)))
-			SSroguemachine.custom_crown = null
-			head = /obj/item/clothing/head/roguetown/crown/silvercrown
-		else
-			to_chat(H, span_warning("My crown must be yet in the realm. I shall search it out."))
-	else
-		if(SSroguemachine.crown == null || (QDELETED(SSroguemachine.crown)))
-			SSroguemachine.crown = null
 			head = /obj/item/clothing/head/roguetown/crown/serpcrown
 		else
 			to_chat(H, span_warning("My crown must be yet in the realm. I shall search it out."))
