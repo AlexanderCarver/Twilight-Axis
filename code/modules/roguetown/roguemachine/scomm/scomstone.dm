@@ -174,14 +174,14 @@
 			S.repeat_message(input_text, src, usedcolor)
 		for(var/obj/item/scomstone/garrison/S in SSroguemachine.scomm_machines)
 			S.repeat_message(input_text, src, usedcolor)
-	for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
-		if(S.garrisonline)
-			S.repeat_message(input_text, src, usedcolor)
-	SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
-	SSroguemachine.custom_crown?.repeat_message(input_text, src, usedcolor)
-	on_cooldown = TRUE
-	addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)
-	return
+		for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
+			if(S.garrisonline)
+				S.repeat_message(input_text, src, usedcolor)
+		SSroguemachine.crown?.repeat_message(input_text, src, usedcolor)
+		SSroguemachine.custom_crown?.repeat_message(input_text, src, usedcolor)
+		on_cooldown = TRUE
+		addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)
+		return
 	for(var/obj/structure/roguemachine/scomm/S in SSroguemachine.scomm_machines)
 		S.repeat_message(input_text, src, usedcolor)
 	for(var/obj/item/scomstone/S in SSroguemachine.scomm_machines)
