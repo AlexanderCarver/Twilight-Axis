@@ -14,6 +14,7 @@
 	Lead your men to victory--and keep them in line--and you will see this realm prosper under a thousand suns."
 	display_order = JDO_GUARD_CAPTAIN
 	advclass_cat_rolls = list(CTAG_CAPTAIN = 20)
+	same_job_respawn_delay = 30 MINUTES
 
 	spells = list(/obj/effect/proc_holder/spell/self/convertrole/guard)
 	outfit = /datum/outfit/job/roguetown/captain
@@ -283,8 +284,7 @@
 	//only migrants and peasants
 	if(!(recruit.job in GLOB.peasant_positions) && \
 		!(recruit.job in GLOB.yeoman_positions) && \
-		!(recruit.job in GLOB.allmig_positions) && \
-		!(recruit.job in GLOB.mercenary_positions))
+		!(recruit.job in GLOB.wanderer_positions))
 		return FALSE
 	//need to see their damn face
 	if(!recruit.get_face_name(null))

@@ -20,6 +20,7 @@
 #define STATS_ALIVE_VULPS "alive_vulps"
 #define STATS_ALIVE_LUPIANS "alive_lupians"
 #define STATS_ALIVE_MOTHS "alive_moths"
+#define STATS_ALIVE_AURA "alive_aura"
 
 #define STATS_VAMPIRES "vampires"
 
@@ -60,6 +61,7 @@
 #define STATS_TRADE_VALUE_IMPORTED "trade_imported"
 #define STATS_GOLDFACE_VALUE_SPENT "goldface_spent"
 #define STATS_SILVERFACE_VALUE_SPENT "silverface_spent"
+#define STATS_COPPERFACE_VALUE_SPENT "copperface_spent"
 #define STATS_PURITY_VALUE_SPENT "purity_spent"
 #define STATS_TAXES_EVADED "taxes_evaded"
 #define STATS_NOBLE_INCOME_TOTAL "noble_income_total"
@@ -158,12 +160,15 @@
 #define STATS_ORGANS_EATEN "organs_eaten"
 #define STATS_DEATHS "deaths"
 #define STATS_PEOPLE_GIBBED "people_gibbed"
+#define STATS_ASSASSINATIONS "assassinations"
 
 //Baotha
 #define STATS_DRUGS_SNORTED "drugs_snorted"
 #define STATS_ALCOHOL_CONSUMED "alcohol_consumed"
 #define STATS_ALCOHOLICS "alcoholics"
 #define STATS_JUNKIES "junkies"
+#define STATS_KNOTTED "knottings"
+#define STATS_KNOTTED_NOT_LUPIANS "knottings_by_non_lupians"
 
 //Matthios
 #define STATS_ITEMS_PICKPOCKETED "items_pickpocketed"
@@ -171,6 +176,7 @@
 #define STATS_GREEDY_PEOPLE "tomb_deaths"
 #define STATS_LOCKS_PICKED "locks_picked"
 #define STATS_BANDITS "bandits"
+#define STATS_KLEPTOMANIACS "kleptomaniacs"
 
 GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_DEATHS = 0,
@@ -180,6 +186,7 @@ GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_PEOPLE_SMITTEN = 0,
 	STATS_BLOOD_SPILT = 0,
 	STATS_PEOPLE_GIBBED = 0,
+	STATS_ASSASSINATIONS = 0,
 	STATS_TRIUMPHS_AWARDED = 0,
 	STATS_TRIUMPHS_STOLEN = 0,
 	STATS_DRUGS_SNORTED = 0,
@@ -209,6 +216,7 @@ GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_ROT_CURED = 0,
 	STATS_WEREVOLVES = 0,
 	STATS_BANDITS = 0,
+	STATS_KLEPTOMANIACS = 0,
 	STATS_FOREST_DEATHS = 0,
 	STATS_COMBAT_SKILLS = 0,
 	STATS_PARRIES = 0,
@@ -249,6 +257,7 @@ GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_ALIVE_VULPS = 0,
 	STATS_ALIVE_LUPIANS = 0,
 	STATS_ALIVE_MOTHS = 0,
+	STATS_ALIVE_AURA = 0,
 	STATS_PEOPLE_DROWNED = 0,
 	STATS_WATER_CONSUMED  = 0,
 	STATS_LIMBS_BITTEN = 0,
@@ -276,6 +285,8 @@ GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_ALIVE_TRADESMEN = 0,
 	STATS_LUX_REVIVALS = 0,
 	STATS_PLEASURES = 0,
+	STATS_KNOTTED = 0,
+	STATS_KNOTTED_NOT_LUPIANS = 0,
 	STATS_SKILLS_DREAMED = 0,
 	STATS_REGULAR_VAULT_INCOME = 0,
 	STATS_VAULT_TOTAL_REVENUE = 0,
@@ -304,6 +315,7 @@ GLOBAL_LIST_INIT(azure_round_stats, list(
 	STATS_TRADE_VALUE_IMPORTED = 0,
 	STATS_GOLDFACE_VALUE_SPENT = 0,
 	STATS_SILVERFACE_VALUE_SPENT = 0,
+	STATS_COPPERFACE_VALUE_SPENT = 0,
 	STATS_PURITY_VALUE_SPENT = 0,
 	STATS_TAXES_EVADED = 0,
 	STATS_NOBLE_INCOME_TOTAL = 0,

@@ -18,6 +18,7 @@ SUBSYSTEM_DEF(vote)
 	var/list/voted = list()
 	var/list/voting = list()
 	var/list/generated_actions = list()
+	var/static/list/everyone_is_equal = list("custom")
 
 /datum/controller/subsystem/vote/fire()	//called by master_controller
 	if(mode)
@@ -162,6 +163,7 @@ SUBSYSTEM_DEF(vote)
 					to_chat(world, "\n<font color='purple'>[ROUND_END_TIME_VERBAL]</font>")
 					SSgamemode.roundvoteend = TRUE
 					SSgamemode.round_ends_at = world.time + ROUND_END_TIME
+					world.TgsAnnounceVoteEndRound()
 			if("storyteller")
 				SSgamemode.storyteller_vote_result(.)
 
@@ -180,6 +182,7 @@ SUBSYSTEM_DEF(vote)
 	return .
 
 /datum/controller/subsystem/vote/proc/submit_vote(vote)
+	// Voting where vote power is equal for all
 	if(mode)
 //		if(CONFIG_GET(flag/no_dead_vote) && usr.stat == DEAD && !usr.client.holder)
 //			return 0
@@ -202,6 +205,8 @@ SUBSYSTEM_DEF(vote)
 								for(var/datum/antagonist/D in H.mind.antag_datums)
 									if(D.increase_votepwr)
 										vote_power += 3
+				if(mode in everyone_is_equal)
+					vote_power = 1
 				choices[choices[vote]] += vote_power //check this
 				return vote
 	return 0
@@ -299,7 +304,7 @@ SUBSYSTEM_DEF(vote)
 		return 1
 	return 0
 
-// Helper for sending an active vote to someone who has just logged in 
+// Helper for sending an active vote to someone who has just logged in
 /datum/controller/subsystem/vote/proc/send_vote(client/C)
 	if(!mode || !C)
 		return

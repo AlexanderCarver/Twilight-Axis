@@ -195,7 +195,7 @@
 				playsound(AM, pick('sound/foley/watermove (1).ogg','sound/foley/watermove (2).ogg'), 100, FALSE)
 			if(istype(oldLoc, type) && (get_dir(src, oldLoc) != SOUTH))
 				water_overlay.layer = ABOVE_MOB_LAYER
-				water_overlay.plane = water_overlay.plane = GAME_PLANE_HIGHEST
+				water_overlay.plane = GAME_PLANE_HIGHEST
 			else
 				spawn(6)
 					if(AM.loc == src)
@@ -237,6 +237,10 @@
 		playsound(user, pick_n_take(wash), 100, FALSE)
 		var/obj/item2wash = user.get_active_held_item()
 		if(!item2wash)
+			if(istype(src, /turf/open/water/bath) && ishuman(user))
+				var/mob/living/carbon/human/bather = user
+				bather.relaxing_bath(1)
+				return
 			user.visible_message(span_info("[user] starts to wash in [src]."))
 			if(do_after(L, 3 SECONDS, target = src))
 				if(wash_in)

@@ -89,6 +89,8 @@ It will also call down lightning strikes from the sky, and fling people with it'
 	speed = 5
 	move_to_delay = 5
 	ranged = TRUE
+	canparry = TRUE
+	defprob = 70
 	pixel_x = -32
 	var/swooping = NONE
 	var/player_cooldown = 0
@@ -383,7 +385,7 @@ It will also call down lightning strikes from the sky, and fling people with it'
 	alpha = 255
 	animate(src, alpha = 204, transform = matrix()*0.9, time = 3, easing = BOUNCE_EASING)
 	for(var/i in 1 to 3)
-		sleep(1)
+		stoplag(1)
 		if(QDELETED(src) || stat == DEAD) //we got hit and died, rip us
 			qdel(F)
 			if(stat == DEAD)

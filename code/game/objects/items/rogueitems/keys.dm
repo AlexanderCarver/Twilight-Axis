@@ -114,7 +114,7 @@
 		SSroguemachine.key = src
 
 /obj/item/roguekey/lord/proc/anti_stall()
-	src.visible_message(span_warning("The Key of Azure Peak crumbles to dust, the ashes spiriting away in the direction of the Keep."))
+	src.visible_message(span_warning("The Key of Twilight Axis crumbles to dust, the ashes spiriting away in the direction of the Keep."))
 	SSroguemachine.key = null //Do not harddel.
 	qdel(src) //Anti-stall
 
@@ -242,6 +242,18 @@
 	desc = "This key should open and close the crier's office."
 	icon_state = "cheesekey"
 	lockid = "crier"
+
+/obj/item/roguekey/keeper
+	name = "beast sanctum key"
+	desc = "This key should open and close the heart beast's sanctum."
+	icon_state = "beastkey"
+	lockid = "keeper"
+
+/obj/item/roguekey/keeper_inner
+	name = "beast inner sanctum key"
+	desc = "This key should open and close the iron gates within the beast's sanctum."
+	icon_state = "beastkey2"
+	lockid = "keeper2"
 
 /obj/item/roguekey/tavern/village
 	lockid = "vtavern"

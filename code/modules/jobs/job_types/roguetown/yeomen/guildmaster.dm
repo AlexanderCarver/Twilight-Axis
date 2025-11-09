@@ -12,7 +12,7 @@
 
 	allowed_races = ACCEPTED_RACES
 
-	tutorial = "You are the leader of the Azure Peak Guild of Crafts. You represents the interests of all of the craftsmen underneath you - including the Tailor\
+	tutorial = "You are the leader of the Twilight Axis Guild of Crafts. You represents the interests of all of the craftsmen underneath you - including the Tailor\
 	the Blacksmiths, the Artificers and the Architects. Other townspeople may look to you for guidance, but they are not under your control. You are an experienced smith and artificer, and can do their work easily. Protect the craftsmen's interests."  
 
 	outfit = /datum/outfit/job/roguetown/guildmaster
@@ -116,6 +116,9 @@
 	if(announcementinput)
 		if(!src.can_speak_vocal())
 			to_chat(src,span_warning("I can't speak!"))
+			return FALSE
+		if(!istype(get_area(src), /area/rogue/indoors/town/dwarfin))//Nuh uh
+			to_chat(src, span_warning("I can only speak from within the Guild."))
 			return FALSE
 		if (!COOLDOWN_FINISHED(src, guildmaster_announcement))
 			to_chat(src, span_warning("You must wait before speaking again."))

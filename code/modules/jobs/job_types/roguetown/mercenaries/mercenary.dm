@@ -1,16 +1,16 @@
 /datum/job/roguetown/mercenary
 	title = "Mercenary"
-	flag = MERCENARY
-	department_flag = MERCENARIES
+	flag = WANDERERS
+	department_flag = WANDERERS
 	faction = "Station"
-	total_positions = 8
-	spawn_positions = 8
+	total_positions = 4
+	spawn_positions = 4
 	allowed_sexes = list(MALE, FEMALE)
 	allowed_races = RACES_ALL_KINDS
 	tutorial = "Blood stains your hands and the coins you hold. You are a sell-sword, a mercenary, a contractor of war. Where you come from, what you are, who you serve.. none of it matters. What matters is that the mammon flows to your pocket."
 	display_order = JDO_MERCENARY
-	selection_color = JCOLOR_MERCENARY
-	min_pq = 2		//Will be handled by classes if PQ limiting is needed. --But Until then, learn escalation, mercs.
+	selection_color = JCOLOR_WANDERER
+	min_pq = 25		//Will be handled by classes if PQ limiting is needed. --But Until then, learn escalation, mercs.
 	max_pq = null
 	round_contrib_points = 1
 	outfit = null	//Handled by classes
@@ -47,5 +47,8 @@
 		/datum/advclass/mercenary/blackoak/ranger,
 		/datum/advclass/mercenary/underdweller,
 		/datum/advclass/mercenary/grudgebearer,
-		/datum/advclass/mercenary/grudgebearer/soldier
+		/datum/advclass/mercenary/grudgebearer/soldier,
+    /datum/advclass/mercenary/twilight_gunslinger,
+    /datum/advclass/mercenary/twilight_grenzelhoft_jager
 	)
+	same_job_respawn_delay = 30 MINUTES

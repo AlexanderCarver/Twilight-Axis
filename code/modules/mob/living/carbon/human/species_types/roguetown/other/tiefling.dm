@@ -20,7 +20,7 @@
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY)
 	inherent_traits = list(TRAIT_NOMOBSWAP)
 	default_features = MANDATORY_FEATURE_LIST
-	use_skintones = 1
+	use_skintones = TRUE
 	disliked_food = NONE
 	liked_food = NONE
 	possible_ages = ALL_AGES_LIST
@@ -130,7 +130,9 @@
 		"Voibion" = SKIN_COLOR_VOIBION,
 		"Chyerno" = SKIN_COLOR_CHYERNO,
 		"Drema"	= SKIN_COLOR_DREMA,
-		"Chir"	= SKIN_COLOR_CHIR
+		"Chir"	= SKIN_COLOR_CHIR,
+		"Glasya"	= SKIN_COLOR_GLASYA,
+		"Asmodeus"	= SKIN_COLOR_ASMODEUS
 	)
 
 /datum/species/tieberian/get_hairc_list()

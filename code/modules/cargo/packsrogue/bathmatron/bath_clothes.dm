@@ -29,6 +29,16 @@
 	cost = 20
 	contains = list(/obj/item/legwears/silk/white)
 
+/datum/supply_pack/rogue/bath_clothes/kneestockings
+	name = "Stockings, Knee"
+	cost = 15
+	contains = list(/obj/item/legwears/knee_high/white)
+
+/datum/supply_pack/rogue/bath_clothes/thighstockings
+	name = "Stockings, Thigh"
+	cost = 15
+	contains = list(/obj/item/legwears/thigh_high/white)
+
 /datum/supply_pack/rogue/bath_clothes/fishnetstockings
 	name = "Stockings, Fishnet"
 	cost = 10
@@ -75,9 +85,9 @@
 	contains = list(/obj/item/clothing/neck/roguetown/collar)
 
 /datum/supply_pack/rogue/bath_clothes/bell_collar
-	name = "Bell Collar"
+	name = "Cowbell Collar"
 	cost = 20
-	contains = list(/obj/item/clothing/neck/roguetown/collar/bell_collar)
+	contains = list(/obj/item/clothing/neck/roguetown/collar/bell/cowbell)
 
 /datum/supply_pack/rogue/bath_clothes/loincloth
 	name = "Loincloth"

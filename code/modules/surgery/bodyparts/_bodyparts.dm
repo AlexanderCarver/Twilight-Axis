@@ -51,6 +51,7 @@
 	var/species_icon = ""
 
 	var/animal_origin = null //for nonhuman bodypart (e.g. monkey)
+	var/prosthetic_prefix = "pr" // for unique prosthetic icons on mob
 	var/dismemberable = 1 //whether it can be dismembered with a weapon.
 	var/disableable = 1
 
@@ -85,6 +86,7 @@
 	var/skeletonized = FALSE
 
 	var/fingers = TRUE
+	var/organ_slowdown = 0 // Its here because this is first shared definition between two leg organ paths
 	var/is_prosthetic = FALSE
 
 	/// Visaul markings to be rendered alongside the bodypart
@@ -566,6 +568,17 @@
 
 	return bodypart_organs
 
+/obj/item/bodypart/proc/get_visible_organs()
+	if(!owner)
+		return FALSE
+
+	var/list/bodypart_organs
+	for(var/obj/item/organ/organ_check as anything in owner.visible_organs) //internal organs inside the dismembered limb are dropped.
+		if(check_zone(organ_check.zone) == body_zone)
+			LAZYADD(bodypart_organs, organ_check) // this way if we don't have any, it'll just return null
+
+	return bodypart_organs
+
 //Gives you a proper icon appearance for the dismembered limb
 /obj/item/bodypart/proc/get_limb_icon(dropped, hideaux = FALSE)
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
@@ -633,7 +646,7 @@
 
 	else
 		limb.icon = species_icon
-		limb.icon_state = "pr_[body_zone]"
+		limb.icon_state = "[prosthetic_prefix]_[body_zone]"
 		if(aux_zone)
 			if(!hideaux)
 				aux = image(limb.icon, "pr_[aux_zone]", -aux_layer, image_dir)
@@ -669,9 +682,7 @@
 	
 	// Organ overlays
 	if(!skeletonized && draw_organ_features)
-		for(var/obj/item/organ/organ as anything in get_organs())
-			if(!organ.is_visible())
-				continue
+		for(var/obj/item/organ/organ as anything in get_visible_organs())
 			var/mutable_appearance/organ_appearance = organ.get_bodypart_overlay(src)
 			if(organ_appearance)
 				. += organ_appearance

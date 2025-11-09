@@ -94,7 +94,7 @@
 
 	/// The text displayed on top of the screen the first time a player enter an area in a round
 	var/first_time_text = null
-	/// Detail text. When a player enter an area, a small message appears in chat with a href. Keep this to a single paragraph, and be informative. Only in areas where it makes sense should the writing be highly evocative / mysterious.
+	/// Detail text. When a player enter an area, a small message appears in chat with a href. see area_detail_txt.dm for style guidee
 	var/detail_text = null
 
 	var/list/firedoors
@@ -111,9 +111,9 @@
 
 	var/converted_type
 
-	var/threat_region = "" // Key used to look up threat region this area belongs to 
+	var/threat_region = "" // Key used to look up threat region this area belongs to
 	/// Message used for deathsight. Try to be deliberately obtuse but not too obtuse.
-	var/deathsight_message = "a locale wreathed in enigmatic fog" 
+	var/deathsight_message = "a locale wreathed in enigmatic fog"
 
 	var/coven_protected = FALSE
 
@@ -432,7 +432,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	T.maptext = {"<span style='vertical-align:top; text-align:center;
 				color: #820000; font-size: 300%;
 				text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
-				font-family: "Blackmoor LET", "Pterra";'>[A.first_time_text]</span>"}
+				font-family: "Blackmoor LET", "Mookmania";'>[A.first_time_text]</span>"}
 	T.maptext_width = 205
 	T.maptext_height = 209
 	T.maptext_x = 12

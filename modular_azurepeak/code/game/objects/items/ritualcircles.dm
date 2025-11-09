@@ -702,7 +702,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 			turf_data[T] = T.type
 			T.ChangeTurf(/turf/open/floor/rogue/dark_ice, flags = CHANGETURF_IGNORE_AIR)
 			playsound(T, 'sound/magic/fleshtostone.ogg', 30, TRUE)
-			sleep(10)
+			stoplag(1 SECONDS)
 
 	end_conversion()
 
@@ -1150,7 +1150,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	backr = /obj/item/rogueweapon/sword/long/zizo
 	neck = /obj/item/clothing/neck/roguetown/bevor
 
-
+	H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/mending/lesser)
 
 
 /obj/structure/ritualcircle/matthios
@@ -1310,6 +1310,8 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	head = /obj/item/clothing/head/roguetown/helmet/heavy/matthios
 	neck = /obj/item/clothing/neck/roguetown/chaincoif/chainmantle
 	backr = /obj/item/rogueweapon/flail/peasantwarflail/matthios
+
+	H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/mending/lesser)
 
 
 /obj/structure/ritualcircle/graggar

@@ -406,7 +406,7 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/turf/target_turf = get_turf(target)
 	if (get_dist(source, target) > length) //If further than the length/dist then we can assume false
 		return FALSE
-	if(current == target_turf)	
+	if(current == target_turf)
 		return TRUE
 
 	var/steps = 1
@@ -1026,28 +1026,40 @@ rough example of the "cone" made by the 3 dirs checked
 		for(x in x to t_center.x+c_dist)
 			T = locate(x,y,t_center.z)
 			if(T)
-				L += T
+				if(istype(T, /turf/closed/wall/mineral/rogue/stone/unbreakable)||istype(T, /turf/closed/mineral/rogue/bedrock))
+					continue //if its unbreakable or bedrock, we skip this one
+				else
+					L += T
 
 		y = t_center.y + c_dist - 1
 		x = t_center.x + c_dist
 		for(y in t_center.y-c_dist to y)
 			T = locate(x,y,t_center.z)
 			if(T)
-				L += T
+				if(istype(T, /turf/closed/wall/mineral/rogue/stone/unbreakable)||istype(T, /turf/closed/mineral/rogue/bedrock))
+					continue //if its unbreakable or bedrock, we skip this one
+				else
+					L += T
 
 		y = t_center.y - c_dist
 		x = t_center.x + c_dist - 1
 		for(x in t_center.x-c_dist to x)
 			T = locate(x,y,t_center.z)
 			if(T)
-				L += T
+				if(istype(T, /turf/closed/wall/mineral/rogue/stone/unbreakable)||istype(T, /turf/closed/mineral/rogue/bedrock))
+					continue //if its unbreakable or bedrock, we skip this one
+				else
+					L += T
 
 		y = t_center.y - c_dist + 1
 		x = t_center.x - c_dist
 		for(y in y to t_center.y+c_dist)
 			T = locate(x,y,t_center.z)
 			if(T)
-				L += T
+				if(istype(T, /turf/closed/wall/mineral/rogue/stone/unbreakable)||istype(T, /turf/closed/mineral/rogue/bedrock))
+					continue //if its unbreakable or bedrock, we skip this one
+				else
+					L += T
 		c_dist++
 		if(tick_checked)
 			CHECK_TICK
@@ -1123,29 +1135,6 @@ GLOBAL_REAL_VAR(list/stack_trace_storage)
 	stack_trace_storage.Cut(1, min(3,stack_trace_storage.len))
 	. = stack_trace_storage
 	stack_trace_storage = null
-
-//Key thing that stops lag. Cornerstone of performance in ss13, Just sitting here, in unsorted.dm.
-
-//Increases delay as the server gets more overloaded,
-//as sleeps aren't cheap and sleeping only to wake up and sleep again is wasteful
-#define DELTA_CALC max(((max(TICK_USAGE, world.cpu) / 100) * max(Master.sleep_delta-1,1)), 1)
-
-//returns the number of ticks slept
-/proc/stoplag(initial_delay)
-	if (!Master || !(Master.current_runlevel & RUNLEVELS_DEFAULT))
-		sleep(world.tick_lag)
-		return 1
-	if (!initial_delay)
-		initial_delay = world.tick_lag
-	. = 0
-	var/i = DS2TICKS(initial_delay)
-	do
-		. += CEILING(i*DELTA_CALC, 1)
-		sleep(i*world.tick_lag*DELTA_CALC)
-		i *= 2
-	while (TICK_USAGE > min(TICK_LIMIT_TO_RUN, Master.current_ticklimit))
-
-#undef DELTA_CALC
 
 /proc/flash_color(mob_or_client, flash_color="#960000", flash_time=20)
 	var/client/C
@@ -1424,49 +1413,6 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 		)
 
 	return pick(subtypesof(/obj/item/reagent_containers/food/snacks) - blocked)
-
-//For these two procs refs MUST be ref = TRUE format like typecaches!
-/proc/weakref_filter_list(list/things, list/refs)
-	if(!islist(things) || !islist(refs))
-		return
-	if(!refs.len)
-		return things
-	if(things.len > refs.len)
-		var/list/f = list()
-		for(var/i in refs)
-			var/datum/weakref/r = i
-			var/datum/d = r.resolve()
-			if(d)
-				f |= d
-		return things & f
-
-	else
-		. = list()
-		for(var/i in things)
-			if(!refs[WEAKREF(i)])
-				continue
-			. |= i
-
-/proc/weakref_filter_list_reverse(list/things, list/refs)
-	if(!islist(things) || !islist(refs))
-		return
-	if(!refs.len)
-		return things
-	if(things.len > refs.len)
-		var/list/f = list()
-		for(var/i in refs)
-			var/datum/weakref/r = i
-			var/datum/d = r.resolve()
-			if(d)
-				f |= d
-
-		return things - f
-	else
-		. = list()
-		for(var/i in things)
-			if(refs[WEAKREF(i)])
-				continue
-			. |= i
 
 /proc/special_list_filter(list/L, datum/callback/condition)
 	if(!islist(L) || !length(L) || !istype(condition))

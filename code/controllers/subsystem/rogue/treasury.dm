@@ -244,7 +244,7 @@ SUBSYSTEM_DEF(treasury)
 	SStreasury.log_to_steward("+[amt] exported [D.name]")
 	record_round_statistic(STATS_STOCKPILE_EXPORTS_VALUE, amt)
 	if(!silent && amt >= EXPORT_ANNOUNCE_THRESHOLD) //Only announce big spending.
-		scom_announce("Azure Peak exports [D.name] for [amt] mammon.")
+		scom_announce("Twilight Axis exports [D.name] for [amt] mammon.")
 	D.lower_demand()
 	return amt
 
@@ -262,7 +262,7 @@ SUBSYSTEM_DEF(treasury)
 			var/exported = do_export(D, TRUE)
 			total_value_exported += exported
 	if(total_value_exported >= EXPORT_ANNOUNCE_THRESHOLD)
-		scom_announce("Azure Peak exports [total_value_exported] mammons of surplus goods.")
+		scom_announce("Twilight Axis exports [total_value_exported] mammons of surplus goods.")
 
 /datum/controller/subsystem/treasury/proc/remove_person(mob/living/person)
 	noble_incomes -= person
@@ -309,8 +309,18 @@ SUBSYSTEM_DEF(treasury)
 	if(HAS_TRAIT(person, TRAIT_NOBLE))
 		return taxation_cat_settings[TAX_CAT_NOBLE]["fineExemption"]
 	else if(HAS_TRAIT(person, TRAIT_RESIDENT) || (person.job in GLOB.yeoman_positions))
-		return taxation_cat_settings[TAX_CAT_NOBLE]["fineExemption"]
+		return taxation_cat_settings[TAX_CAT_YEOMEN]["fineExemption"]
 	else if(person.job in GLOB.church_positions)
 		return taxation_cat_settings[TAX_CAT_CHURCH]["fineExemption"]
 	else
 		return taxation_cat_settings[TAX_CAT_PEASANTS]["fineExemption"]
+
+/// Checks if there is a valid amount in the treasury, if so, withdraw that amount and log it
+/// Currently only used by Chimeric heartbeasts
+/datum/controller/subsystem/treasury/proc/withdraw_money_treasury(amt, target)
+	if(!amt || treasury_value < amt)
+		return FALSE // Not enough funds
+
+	treasury_value -= amt
+	log_to_steward("-[amt] withdrawn from treasury by [target]")
+	return TRUE

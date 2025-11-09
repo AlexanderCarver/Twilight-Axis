@@ -38,6 +38,7 @@
 	simple_detect_bonus = 20
 	deaggroprob = 0
 	defprob = 40
+	candodge = TRUE
 	// del_on_deaggro = 44 SECONDS
 	retreat_health = 0.3
 	food = 0
@@ -63,7 +64,7 @@
 	new /obj/item/magic/fairydust(deathspot)
 	new /obj/item/magic/fairydust(deathspot)
 	update_icon()
-	sleep(1)
+	stoplag(1)
 	qdel(src)
 
 /mob/living/simple_animal/hostile/retaliate/rogue/fae/sprite/taunted(mob/user)

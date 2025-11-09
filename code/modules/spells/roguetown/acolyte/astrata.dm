@@ -91,6 +91,13 @@
 	/// Amount of PQ gained for reviving people
 	var/revive_pq = PQ_GAIN_REVIVE
 
+/obj/effect/proc_holder/spell/invoked/revive/start_recharge()
+	// Because the cooldown for anastasis is so incredibly low, not having tech impacts them more heavily than other faiths
+	var/tech_resurrection_modifier = SSchimeric_tech.get_resurrection_multiplier()
+	if(tech_resurrection_modifier > 1)
+		recharge_time = initial(recharge_time) * (tech_resurrection_modifier * 2.5)
+	. = ..()
+
 /obj/effect/proc_holder/spell/invoked/revive/cast(list/targets, mob/living/user)
 	..()
 
@@ -389,7 +396,7 @@
 	chargetime = 0.5 SECONDS
 	invocations = list("By sacred fire, be cleansed!")
 	sound = 'sound/magic/fireball.ogg'
-	recharge_time = 600 SECONDS
+	recharge_time = 80 SECONDS
 	miracle = TRUE
 	devotion_cost = 60
 	associated_skill = /datum/skill/magic/holy

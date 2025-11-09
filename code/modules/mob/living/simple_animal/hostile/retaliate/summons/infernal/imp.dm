@@ -37,6 +37,7 @@
 	simple_detect_bonus = 20
 	deaggroprob = 0
 	defprob = 40
+	candodge = TRUE
 	// del_on_deaggro = 44 SECONDS
 	retreat_health = 0.3
 	food = 0
@@ -79,7 +80,7 @@
 	new /obj/item/magic/infernal/ash(deathspot)
 	new /obj/item/magic/infernal/ash(deathspot)
 	update_icon()
-	sleep(1)
+	stoplag(1)
 	qdel(src)
 
 

@@ -1,6 +1,7 @@
 /turf/closed
 	name = ""
 	layer = CLOSED_TURF_LAYER
+	plane = WALL_PLANE
 	opacity = 1
 	density = TRUE
 	blocks_air = TRUE
@@ -24,14 +25,6 @@
 		if(L.mobility_flags & MOBILITY_MOVE)
 			wallpress(L)
 			return
-			
-/turf/closed/proc/feel_turf(mob/living/user)
-	to_chat(user, span_notice("I start feeling around [src]"))
-	if(!do_after(user, 1.5 SECONDS, src))
-		return
-
-	for(var/obj/structure/lever/hidden/lever in contents)
-		lever.feel_button(user)
 
 /turf/closed/proc/wallpress(mob/living/user)
 	if(user.wallpressed)
@@ -214,6 +207,7 @@
 					playsound(user, 'sound/foley/climb.ogg', 100, TRUE)
 				if(L.mind)
 					L.mind.add_sleep_experience(/datum/skill/misc/climbing, (L.STAINT/2), FALSE)
+				return TRUE
 	else
 		..()
 
@@ -258,6 +252,14 @@
 	if(istype(mover) && (mover.pass_flags & PASSCLOSEDTURF))
 		return TRUE
 	return ..()
+
+/turf/closed/proc/feel_turf(mob/living/user)
+	to_chat(user, span_notice("I start feeling around [src]"))
+	if(!do_after(user, 1.5 SECONDS, src))
+		return
+
+	for(var/obj/structure/lever/hidden/lever in contents)
+		lever.feel_button(user)
 
 /turf/closed/indestructible
 	name = "wall"

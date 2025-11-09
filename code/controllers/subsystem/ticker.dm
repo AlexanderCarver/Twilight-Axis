@@ -64,10 +64,17 @@ SUBSYSTEM_DEF(ticker)
 	var/end_state = "undefined"
 	var/job_change_locked = FALSE
 	var/list/royals_readied = list()
-	var/rulertype = "Grand Duke" // reports whether king or queen rules
-	var/rulermob = null // reports what the ruling mob is.
-	var/regentmob = null // keeps track of regent mob
-	var/regentday = -1 // to prevent regent shuffling
+
+	/// Realm name, the location name of the current map
+	var/realm_name = "Twilight Axis"
+	/// Reports the current ruler's display name
+	var/rulertype = "Grand Duke"
+	/// The current ruling mob
+	var/rulermob = null
+	/// Current regent mob
+	var/regentmob = null
+	/// Prevent regent shuffling
+	var/regentday = -1
 	var/failedstarts = 0
 	var/list/manualmodes = list()
 
@@ -173,10 +180,11 @@ SUBSYSTEM_DEF(ticker)
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
 //			to_chat(world, span_boldnotice("Welcome to [station_name()]!"))
-			send2chat(new /datum/tgs_message_content("New round starting on [SSmapping.config.map_name]!"), CONFIG_GET(string/chat_announce_new_game))
+//			send2chat(new /datum/tgs_message_content("New round starting on [SSmapping.config.map_name]!"), CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			//Everyone who wants to be an observer is now spawned
 			create_observers()
+			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 			fire()
 		if(GAME_STATE_PREGAME)
 			//lobby stats for statpanels
@@ -188,7 +196,7 @@ SUBSYSTEM_DEF(ticker)
 				var/mob/dead/new_player/player = i
 				if(player.ready == PLAYER_READY_TO_PLAY)
 					++totalPlayersReady
-			
+
 			if(!gamemode_voted)
 				SSvote.initiate_vote("storyteller", "Psydon", timeLeft/2)
 				gamemode_voted = TRUE
@@ -214,6 +222,7 @@ SUBSYSTEM_DEF(ticker)
 					timeLeft = null
 					Master.SetRunLevel(RUNLEVEL_LOBBY)
 				else
+					SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
 					current_state = GAME_STATE_SETTING_UP
 					Master.SetRunLevel(RUNLEVEL_SETUP)
 					if(start_immediately)
@@ -226,6 +235,7 @@ SUBSYSTEM_DEF(ticker)
 				start_at = world.time + 600
 				timeLeft = null
 				Master.SetRunLevel(RUNLEVEL_LOBBY)
+				SEND_SIGNAL(src, COMSIG_TICKER_ERROR_SETTING_UP)
 
 		if(GAME_STATE_PLAYING)
 			check_queue()
@@ -306,8 +316,10 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/setup()
 	message_admins(span_boldannounce("Starting game..."))
 	var/init_start = world.timeofday
-		
 
+	if(SSmapping.map_adjustment)
+		realm_name = SSmapping.map_adjustment.realm_name
+   
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
@@ -409,6 +421,8 @@ SUBSYSTEM_DEF(ticker)
 	SSgamemode.current_storyteller?.process(STORYTELLER_WAIT_TIME * 0.1) // we want this asap
 	SSgamemode.current_storyteller?.round_started = TRUE
 
+	world.TgsAnnounceRoundStart()
+
 	setup_done = TRUE
 
 	job_change_locked = FALSE
@@ -462,6 +476,7 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		if(player.ready == PLAYER_READY_TO_PLAY)
 			GLOB.joined_player_list += player.ckey
+			update_wretch_slots()
 			player.create_character(FALSE)
 		else
 			player.new_player_panel()
@@ -759,10 +774,11 @@ SUBSYSTEM_DEF(ticker)
 /// Wrapper for setting rulermob and rulertype
 /datum/controller/subsystem/ticker/proc/set_ruler_mob(mob/newruler)
 	rulermob = newruler
+	var/datum/job/lord_job = SSjob.GetJob("Grand Duke")
 	if(should_wear_femme_clothes(rulermob))
-		SSticker.rulertype = "Grand Duchess"
+		SSticker.rulertype = lord_job?.f_title || lord_job.title
 	else
-		SSticker.rulertype = "Grand Duke"
+		SSticker.rulertype = lord_job?.display_title || lord_job?.title
 	SEND_GLOBAL_SIGNAL(COMSIG_TICKER_RULERMOB_SET, rulermob)
 
 /// Wrapper for sunsteal proc

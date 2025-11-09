@@ -36,7 +36,6 @@
 						user.mind.special_items -= item
 						var/obj/item/I = new path2item(user.loc)
 						user.put_in_hands(I)
-			return
 
 /obj/structure/flora/newtree/obj_destruction(damage_flag)//this proc is stupidly long for a destruction proc
 	var/turf/NT = get_turf(src)
@@ -211,6 +210,7 @@
 //	var/tree_type = 1
 	var/base_state = TRUE
 	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	plane = FLOOR_PLANE
 	static_debris = list(/obj/item/grown/log/tree/stick = 1)
 	density = FALSE
 	max_integrity = 30

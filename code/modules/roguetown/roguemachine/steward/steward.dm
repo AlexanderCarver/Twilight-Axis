@@ -84,7 +84,7 @@
 		SStreasury.log_to_steward("-[amt] imported [D.name]")
 		record_round_statistic(STATS_STOCKPILE_IMPORTS_VALUE, amt)
 		if(amt >= 100) //Only announce big spending.
-			scom_announce("Azure Peak imports [D.name] for [amt] mammon.", )
+			scom_announce("Twilight Axis imports [D.name] for [amt] mammon.", )
 		D.raise_demand()
 		addtimer(CALLBACK(src, PROC_REF(do_import), D.type), 10 SECONDS)
 	if(href_list["export"])
@@ -284,6 +284,8 @@
 			var/total_deposit = 0
 			for(var/bank_account in SStreasury.bank_accounts)
 				total_deposit += SStreasury.bank_accounts[bank_account]
+			if(total_deposit == 0)
+				total_deposit++ //Division by zero catch
 			contents += "<a href='?src=\ref[src];switchtab=[TAB_MAIN]'>\[Return\]</a>"
 			contents += " <a href='?src=\ref[src];compact=1'>\[Compact: [compact? "ENABLED" : "DISABLED"]\]</a><BR>"
 			contents += "<center>Bank<BR>"

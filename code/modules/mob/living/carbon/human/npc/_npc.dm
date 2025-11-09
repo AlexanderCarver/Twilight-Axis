@@ -1,3 +1,5 @@
+#define ATTACKS_UNTIL_SWITCHING_UP 3 // How many attack a NPC will use on the same place before switching it up
+
 /mob/living/carbon/human
 	var/aggressive=0 //0= retaliate only
 	var/frustration=0
@@ -46,6 +48,23 @@
 	/// When above this amount of stamina (Stamina is stamina damage), the NPC will not attempt to jump.
 	var/npc_max_jump_stamina = 50
 
+	/// Attack Selection
+	var/attack_on_zone = 1
+
+	///What distance should we be checking for interesting things when considering idling/deidling? Defaults to AI_DEFAULT_INTERESTING_DIST
+	var/interesting_dist = AI_DEFAULT_INTERESTING_DIST
+	///our current cell grid
+	var/datum/cell_tracker/our_cells
+
+/mob/living/carbon/human/Initialize()
+	. = ..()
+	our_cells = new(interesting_dist, interesting_dist, 1)
+	set_new_cells()
+
+/mob/living/carbon/human/Destroy()
+	our_cells = null
+	return ..()
+
 /mob/living/carbon/human/proc/IsStandingStill()
 	return doing || resisting || pickpocketing
 
@@ -72,25 +91,7 @@
 		return TRUE
 	return FALSE
 
-// Check if a player is in range of the AI
-// TODO: Note, we can nuke this once we put complex on spatial grid sleeping
-/mob/living/carbon/human/proc/scan_for_player_in_range(pawn_x, pawn_y, pawn_z)
-	for(var/i = GLOB.player_list.len; i > 0; i--)
-		var/mob/living/M = GLOB.player_list[i]
-		if(!istype(M))
-			continue
-		if(M.z != z) // not the same z sector
-			if(abs(M.y - pawn_y) > 6 || abs(M.x - pawn_x) > 6)
-				continue
-		else if(abs(M.y - pawn_y) > 14 || abs(M.x - pawn_x) > 14)
-			continue
-		return TRUE
-	return FALSE
-
 /mob/living/carbon/human/proc/process_ai()
-	// Prevent expensive pathing if it is in idle mode and there's no players
-	if((mode == NPC_AI_IDLE || mode == NPC_AI_OFF) && !scan_for_player_in_range(x, y, z))
-		return FALSE
 	if(IsDeadOrIncap())
 		walk_to(src,0)
 		return stat == DEAD // only stop processing if we're dead-dead
@@ -272,6 +273,7 @@
 		QDEL_NULL(mmb_intent) // unset our intent after
 		m_intent = old_m_intent
 		if(.)
+			clear_path()
 			start_pathing_to(target) // regenerate path now that we've jumped
 		return
 	m_intent = old_m_intent
@@ -344,7 +346,7 @@
 		// Basically a catch-up step. Won't run every time.
 		if(npc_try_jump())
 			NPC_THINK("MOVEMENT TURN [movement_turn]: Jumped, waiting 1ds!")
-			sleep(1)
+			stoplag(1)
 			continue
 		if(!validate_path())
 			NPC_THINK("MOVEMENT TURN [movement_turn]: Path invalidated!")
@@ -360,7 +362,7 @@
 		var/movespeed = cached_multiplicative_slowdown // this is recalculated on Moved() so we don't need to do it ourselves
 		if(!(mobility_flags & MOBILITY_MOVE) || IsDeadOrIncap() || IsStandingStill() || is_move_blocked_by_grab())
 			NPC_THINK("MOVEMENT TURN [movement_turn]: Waiting to move!")
-			sleep(1) // wait 1ds to see if we're finished/recovered
+			stoplag(1) // wait 1ds to see if we're finished/recovered
 			continue
 		// this is unnecessary, we don't re-call handle_ai until this is done
 /* 		if(world.time > (move_started + /datum/controller/subsystem/humannpc::wait))
@@ -377,12 +379,12 @@
 					pathing_frustration = 0
 					myPath -= myPath[1]
 					NPC_THINK("MOVEMENT TURN [movement_turn]: Z-jump succeeded, movement on cooldown for [movespeed/10] seconds!")
-					sleep(movespeed) // wait until next move
+					stoplag(movespeed) // wait until next move
 				else
 					var/time_to_wait = AmountOffBalanced() || (1 SECONDS)
 					NPC_THINK("MOVEMENT TURN [movement_turn]: Z-jump failed, trying again in [time_to_wait/10] seconds!")
 					pathing_frustration++
-					sleep(time_to_wait)
+					stoplag(time_to_wait)
 				continue
 			// if moving up, go in the direction of the stairs, else go the opposite direction
 			if(the_stairs)
@@ -409,12 +411,12 @@
 				myPath.Cut(1, 3)
 				pathing_frustration = 0
 				NPC_THINK("MOVEMENT TURN [movement_turn]: Movement on cooldown for [movespeed/10] seconds!")
-				sleep(movespeed) // wait until next move
+				stoplag(movespeed) // wait until next move
 			else
 				var/time_to_wait = AmountOffBalanced() || (1 SECONDS)
 				NPC_THINK("MOVEMENT TURN [movement_turn]: Jump failed, trying again in [time_to_wait/10] seconds!")
 				pathing_frustration++
-				sleep(time_to_wait)
+				stoplag(time_to_wait)
 			continue
 		else if(!step(src, move_dir, cached_multiplicative_slowdown)) // try to move onto or along our path
 			for(var/obj/structure/O in next_step)
@@ -425,13 +427,14 @@
 		if(loc != next_step) // movement failed and so did climb_structure
 			pathing_frustration++
 			NPC_THINK("MOVEMENT TURN [movement_turn]: Move failed! Strike [pathing_frustration]!")
-			sleep(1)
+			stoplag(1)
 		else if(loc == myPath[1]) // if we made it to the right part of our path
 			.++
 			pathing_frustration = 0
 			myPath -= myPath[1]
 			NPC_THINK("MOVEMENT TURN [movement_turn]: Movement on cooldown for [movespeed/10] seconds!")
-			sleep(movespeed) // wait until next move	
+			stoplag(movespeed) // wait until next move	
+		
 // blocks, but only while path is being calculated
 /mob/living/carbon/human/proc/start_pathing_to(new_target)
 	if(!new_target)
@@ -847,6 +850,11 @@
 		npc_choose_attack_zone(victim)
 
 /mob/living/carbon/human/proc/npc_choose_attack_zone(mob/living/victim)
+	if(attack_on_zone <= ATTACKS_UNTIL_SWITCHING_UP)
+		attack_on_zone++
+		return
+	else
+		attack_on_zone = 1
 	// My life for a better way to handle deadite AI.
 	if(mind?.has_antag_datum(/datum/antagonist/zombie))
 		aimheight_change(deadite_get_aimheight(victim))
@@ -940,3 +948,58 @@
 		return TRUE
 	else
 		return FALSE
+
+/mob/living/carbon/human/proc/on_client_enter(datum/source, atom/target)
+	SIGNAL_HANDLER
+	if(mode == NPC_AI_OFF)
+		return
+
+	if(mode == NPC_AI_SLEEP)
+		mode = NPC_AI_IDLE
+
+/mob/living/carbon/human/proc/on_client_exit(datum/source, datum/exited)
+	SIGNAL_HANDLER
+	if(mode == NPC_AI_OFF)
+		return
+
+	consider_wakeup()
+
+/mob/living/carbon/human/proc/set_new_cells()
+	if(QDELETED(src)) // Move to nullspace causes move and causes this.
+		return
+	var/turf/our_turf = get_turf(src)
+	if(isnull(our_turf))
+		return
+
+	var/list/cell_collections = our_cells?.recalculate_cells(our_turf)
+
+	for(var/datum/old_grid as anything in cell_collections[2])
+		UnregisterSignal(old_grid, list(SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_CLIENTS), SPATIAL_GRID_CELL_EXITED(SPATIAL_GRID_CONTENTS_TYPE_CLIENTS)))
+
+	for(var/datum/spatial_grid_cell/new_grid as anything in cell_collections[1])
+		RegisterSignal(new_grid, SPATIAL_GRID_CELL_ENTERED(SPATIAL_GRID_CONTENTS_TYPE_CLIENTS), PROC_REF(on_client_enter))
+		RegisterSignal(new_grid, SPATIAL_GRID_CELL_EXITED(SPATIAL_GRID_CONTENTS_TYPE_CLIENTS), PROC_REF(on_client_exit))
+	consider_wakeup()
+
+/mob/living/carbon/human/proc/update_grid()
+	SIGNAL_HANDLER
+	set_new_cells()
+
+/mob/living/carbon/human/proc/consider_wakeup()
+	if(mode == NPC_AI_OFF)
+		return
+
+	for(var/datum/spatial_grid_cell/grid as anything in our_cells.member_cells)
+		if(length(grid.client_contents))
+			if(mode != NPC_AI_SLEEP || mode != NPC_AI_IDLE)
+				return TRUE
+			mode = NPC_AI_IDLE
+			return TRUE
+
+	mode = NPC_AI_SLEEP
+	return FALSE
+
+/mob/living/carbon/human/Moved()
+	. = ..()
+	if(mode != NPC_AI_OFF)
+		update_grid()

@@ -1,14 +1,13 @@
 /datum/virtue/utility/noble
 	name = "Nobility"
-	desc = "By birth, blade or brain, I am noble known to the royalty of these lands, and have all the benefits associated with it."
+	desc = "By birth, blade or brain, I am noble known to the royalty of these lands, and have all the benefits associated with it. I've cleverly stashed away a healthy amount of coinage, alongside a familial heirloom."
 	added_traits = list(TRAIT_NOBLE)
 	added_skills = list(list(/datum/skill/misc/reading, 1, 6))
-	added_stashed_items = list("Heirloom Amulet" = /obj/item/clothing/neck/roguetown/ornateamulet/noble)
+	added_stashed_items = list("Heirloom Amulet" = /obj/item/clothing/neck/roguetown/ornateamulet/noble,
+                                "Hefty Coinpurse" = /obj/item/storage/belt/rogue/pouch/coins/virtuepouch)
 
 /datum/virtue/utility/noble/apply_to_human(mob/living/carbon/human/recipient)
 	SStreasury.noble_incomes[recipient] += 15
-	var/obj/item/pouch = new /obj/item/storage/belt/rogue/pouch/coins/virtuepouch(get_turf(recipient))
-	recipient.put_in_hands(pouch, forced = TRUE)
 
 /datum/virtue/utility/beautiful
 	name = "Beautiful"
@@ -42,7 +41,7 @@
 
 /datum/virtue/utility/resident
 	name = "Resident"
-	desc = "I'm a resident of Azure Peak. I have an account in the city's treasury and a home in the city."
+	desc = "I'm a resident of Twilight Axis. I have an account in the city's treasury and a home in the city."
 	added_traits = list(TRAIT_RESIDENT)
 
 /datum/virtue/utility/resident/apply_to_human(mob/living/carbon/human/recipient)
@@ -80,7 +79,7 @@
 				var/obj/structure/chair/chosen_chair = pick(possible_chairs)
 				recipient.forceMove(get_turf(chosen_chair))
 				chosen_chair.buckle_mob(recipient)
-				to_chat(recipient, span_notice("As a resident of Azure Peak, you find yourself seated at a chair in the local tavern."))
+				to_chat(recipient, span_notice("As a resident of Twilight Axis, you find yourself seated at a chair in the local tavern."))
 			else
 				var/list/possible_spawns = list()
 				for(var/turf/T in spawn_area)
@@ -90,7 +89,7 @@
 				if(length(possible_spawns))
 					var/turf/spawn_loc = pick(possible_spawns)
 					recipient.forceMove(spawn_loc)
-					to_chat(recipient, span_notice("As a resident of Azure Peak, you find yourself in the local tavern."))
+					to_chat(recipient, span_notice("As a resident of Twilight Axis, you find yourself in the local tavern."))
 
 /datum/virtue/utility/failed_squire
 	name = "Failed Squire"
@@ -186,7 +185,7 @@
 	desc = "Music, artistry and the act of showmanship carried me through life. I've hidden a favorite instrument of mine, know how to please anyone I touch, and how to crack the eggs of hecklers."
 	custom_text = "Comes with a stashed instrument of your choice. You choose the instrument after spawning in."
 	added_traits = list(TRAIT_NUTCRACKER, TRAIT_GOODLOVER)
-	added_skills = list(list(/datum/skill/misc/music, 3, 6))
+	added_skills = list(list(/datum/skill/misc/music, 4, 4))
 
 /datum/virtue/utility/performer/apply_to_human(mob/living/carbon/human/recipient)
     addtimer(CALLBACK(src, .proc/performer_apply, recipient), 50)
@@ -229,6 +228,24 @@
 						list(/datum/skill/labor/farming, 2, 2),
 						list(/datum/skill/labor/fishing, 2, 2),
 						list(/datum/skill/labor/lumberjacking, 2, 2)
+	)
+
+/datum/virtue/utility/homesteader
+	name = "Pilgrim (-3 TRI)"
+	added_traits = list(TRAIT_HOMESTEAD_EXPERT)
+	desc= "As they say, 'hearth is where the heart is'. You are intimately familiar with the labors of lyfe, and have stowed away everything necessary to start anew: a hunting dagger, your trusty hoe, and a sack of assorted supplies."
+	triumph_cost = 3
+	added_stashed_items = list(
+		"Hoe" = /obj/item/rogueweapon/hoe,
+		"Bag of Food" = /obj/item/storage/roguebag/food,
+		"Hunting Knife" = /obj/item/rogueweapon/huntingknife
+	)
+	added_skills = list(list(/datum/skill/craft/cooking, 3, 3),
+						list(/datum/skill/misc/athletics, 2, 2),
+						list(/datum/skill/labor/farming, 3, 3),
+						list(/datum/skill/labor/fishing, 3, 3),
+						list(/datum/skill/labor/lumberjacking, 2, 2),
+						list(/datum/skill/combat/knives, 2, 2)
 	)
 
 /datum/virtue/utility/ugly
@@ -313,3 +330,8 @@
 	name = "Defiled Keyholder"
 	desc = "The 'Holy' See has their blood-stained grounds, and so do we. Underneath their noses, we pray to the true gods - I know the location of the local heretic conclave. Secrecy is paramount. If found out, I will surely be killed."
 	added_traits = list(TRAIT_ZURCH)
+
+/datum/virtue/utility/mountable
+	name = "Mountable"
+	desc = "You have trained and become fit enough to function as a suitable mount. People may ride you as they would a saiga."
+	added_traits = list(TRAIT_MOUNTABLE)

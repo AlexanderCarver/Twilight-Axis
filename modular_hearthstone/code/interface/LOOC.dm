@@ -1,3 +1,4 @@
+/*
 /datum/keybinding/looc
 	category = CATEGORY_CLIENT
 	weight = WEIGHT_HIGHEST
@@ -43,7 +44,7 @@
 		to_chat(src, span_danger("I cannot use LOOC (perma muted)."))
 		return
 	
-	if(isobserver(mob) && !holder)
+	if(isobserver(mob))
 		to_chat(src, span_danger("I cannot use LOOC while dead."))
 		return
 
@@ -91,7 +92,7 @@
 		if(!M.client)
 			continue
 		if((C in GLOB.admins) && (C.prefs.admin_chat_toggles & CHAT_ADMINLOOC))
-			added_text += " ([mob.ckey]) <A href='?_src_=holder;[HrefToken()];mute=[ckey];mute_type=[MUTE_LOOC]'><font color='[(muted & MUTE_LOOC)?"red":"blue"]'>\[MUTE\]</font></a>"
+			added_text += " ([mob.ckey]) [ADMIN_FLW(mob)] <A href='?_src_=holder;[HrefToken()];mute=[ckey];mute_type=[MUTE_LOOC]'><font color='[(muted & MUTE_LOOC)?"red":"blue"]'>\[MUTE\]</font></a>"
 			is_admin = 1
 		mobs += C
 		if(C.prefs.chat_toggles & CHAT_OOC)
@@ -103,3 +104,13 @@
 				to_chat(C, "<font color='["#6699CC"]'><b><span class='prefix'>[prefix]:</span> <EM>[src.mob.name][added_text]:</EM> <span class='message'>[msg]</span></b></font>")
 			else if(is_admin == 1)
 				to_chat(C, "<font color='["#6699CC"]'><b>(R) <span class='prefix'>[prefix]:</span> <EM>[src.mob.name][added_text]:</EM> <span class='message'>[msg]</span></b></font>")
+			if(istype(usr,/mob/living))
+				var/turf/speakturf = get_turf(M)
+				var/turf/sourceturf = get_turf(usr)
+				if(wp == 1 && (M in range (7, src)))
+					to_chat(C, "<font color='["#6699CC"]'><b><span class='prefix'>[prefix]:</span> <EM>[src.mob.name][added_text]:</EM> <span class='message'>[msg]</span></b></font>")
+				else if(speakturf in get_hear(7, sourceturf))
+					to_chat(C, "<font color='["#6699CC"]'><b><span class='prefix'>[prefix]:</span> <EM>[src.mob.name][added_text]:</EM> <span class='message'>[msg]</span></b></font>")
+				else if(is_admin == 1)
+					to_chat(C, "<font color='["#6699CC"]'><b>(R) <span class='prefix'>[prefix]:</span> <EM>[src.mob.name][added_text]:</EM> <span class='message'>[msg]</span></b></font>")
+*/

@@ -94,6 +94,7 @@
 	candodge = TRUE
 	canparry = TRUE
 	item_d_type = "blunt"
+	intent_intdamage_factor = BLUNT_DEFAULT_INT_DAMAGEFACTOR
 
 /mob/living/simple_animal/hostile/retaliate/rogue/voidstoneobelisk/death(gibbed)
 	..()
@@ -101,7 +102,7 @@
 	new /obj/item/magic/voidstone(deathspot)
 	spill_embedded_objects()
 	update_icon()
-	sleep(1)
+	stoplag(1)
 	qdel(src)
 
 

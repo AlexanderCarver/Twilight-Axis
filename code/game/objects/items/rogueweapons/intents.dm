@@ -26,6 +26,8 @@
 	var/noaa = FALSE //turns off auto aiming, also turns off the 'swooshes'
 	var/warnie = ""
 	var/pointer = 'icons/effects/mousemice/human_attack.dmi'
+	var/charge_pointer = null // Simple unique charge icon
+	var/charged_pointer = null // Simple unique charged icon
 	var/clickcd = CLICK_CD_MELEE //the cd invoked clicking on stuff with this intent
 	var/recovery = 0		//RTD unable to move for this duration after an attack without becoming off balance
 	var/list/charge_invocation //list of stuff to say while charging
@@ -233,6 +235,10 @@
 		mastermob?.vis_contents -= mob_charge_effect
 
 /datum/intent/proc/on_mmb(atom/target, mob/living/user, params)
+	return
+
+// Do something special when this intent is applied to a living target, H being the receiver and user being the attacker
+/datum/intent/proc/spec_on_apply_effect(mob/living/H, mob/living/user, params)
 	return
 
 /datum/intent/use
@@ -646,6 +652,7 @@
 	item_d_type = "blunt"
 	intent_effect = /datum/status_effect/debuff/dazed
 	target_parts = list(BODY_ZONE_HEAD)
+	intent_intdamage_factor = BLUNT_DEFAULT_INT_DAMAGEFACTOR
 
 /*/datum/intent/effect/daze/shield
 	intent_effect = /datum/status_effect/debuff/dazed/shield

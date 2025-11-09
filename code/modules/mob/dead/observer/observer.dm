@@ -78,6 +78,15 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	icon_state = "hollow"
 	alpha = 150
 
+/mob/dead/observer/rogue/Move(n, direct)
+	if(world.time < next_gmove)
+		return
+	next_gmove = world.time + 2
+
+	setDir(direct)
+
+	. = ..()
+
 /mob/dead/observer/screye
 //	see_invisible = SEE_INVISIBLE_LIVING
 	sight = 0
@@ -835,15 +844,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	target.key = key
 	target.faction = list("neutral")
-	return TRUE
-
-//this is a mob verb instead of atom for performance reasons
-//see /mob/verb/examinate() in mob.dm for more info
-//overridden here and in /mob/living for different point span classes and sanity checks
-/mob/dead/observer/pointed(atom/A as mob|obj|turf in view(client.view, src))
-	if(!..())
-		return FALSE
-	usr.visible_message(span_deadsay("<b>[src]</b> points to [A]."))
 	return TRUE
 
 /mob/dead/observer/verb/view_manifest()

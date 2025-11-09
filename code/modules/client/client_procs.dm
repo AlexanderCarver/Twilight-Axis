@@ -146,6 +146,9 @@ GLOBAL_LIST_EMPTY(respawncounts)
 		show_chronicle(tab)
 		return
 
+	if(href_list["commandbar_typing"])
+		handle_commandbar_typing(href_list)
+
 	switch(href_list["_src_"])
 		if("holder")
 			hsrc = holder
@@ -248,13 +251,6 @@ GLOBAL_LIST_EMPTY(respawncounts)
 	return 1
 */
 
-	///////////
-	//CONNECT//
-	///////////
-#if (PRELOAD_RSC == 0)
-GLOBAL_LIST_EMPTY(external_rsc_urls)
-#endif
-
 /client/New(TopicData)
 	var/tdata = TopicData //save this for later use
 	TopicData = null							//Prevent calls to client.Topic from connect
@@ -264,6 +260,8 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
+
+	initialize_commandbar_spy()
 
 	GLOB.ahelp_tickets.ClientLogin(src)
 	var/connecting_admin = FALSE //because de-admined admins connecting should be treated like admins.
@@ -472,7 +470,7 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 	check_ip_intel()
 	validate_key_in_db()
 
-//	send_resources()
+	send_resources()
 
 
 	generate_clickcatcher()
@@ -589,6 +587,7 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 
 /client/Destroy()
 	. = ..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
+	STOP_PROCESSING(SSmousecharge, src)
 	QDEL_NULL(droning_sound)
 	last_droning_sound = null
 	if(mob)
@@ -1149,7 +1148,7 @@ GLOBAL_LIST_EMPTY(external_rsc_urls)
 	if(whitelisted != 2)
 		return whitelisted
 	else
-		if(BC_IsKeyWhitelisted(ckey))
+		if(check_whitelist(ckey))
 			whitelisted = 1
 		else
 			whitelisted = 0
