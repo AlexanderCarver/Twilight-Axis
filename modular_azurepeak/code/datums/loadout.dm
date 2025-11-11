@@ -804,7 +804,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Kit - Weeper Lathe - Required: Greatsword"
 	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/waff
-	ckeywhitelist = list("waffai")
+	donatitem = TRUE
 /*
 /datum/loadout_item/donator_conqueror_helmet
 	name = "Donator Kit - Conqueror's Helmet - Required: Blacksteel Armet"
