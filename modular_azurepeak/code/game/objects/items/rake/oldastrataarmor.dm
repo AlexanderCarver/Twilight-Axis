@@ -3,7 +3,7 @@
 	desc = "This is one of the elements of the armor of Ellian the Eternal, the conqueror of Zizo's servants, the champion of Psydon, and the founder of the Golden Empire. The face of the mask immortalizes his cold rage and determination to defeat his enemies."
 	body_parts_covered = FULL_HEAD
 	icon = 'modular_azurepeak/icons/rake/clothing/elliotarmor.dmi'
-	mob_overlay_icon = 'modular_azurepeak/icons/rake/clothing/elliotarmor.dmi'
+	mob_overlay_icon = 'modular_azurepeak/icons/rake/clothing/onmob/elliotarmor.dmi'
 	icon_state = "elliotblesshelmet"
 	item_state = "elliotblesshelmet"
 	flags_inv = HIDEEARS|HIDEFACE|HIDESNOUT

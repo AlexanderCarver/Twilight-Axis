@@ -805,14 +805,14 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/waff
 	donatitem = TRUE
-/*
+
 /datum/loadout_item/donator_conqueror_helmet
 	name = "Donator Kit - Conqueror's Helmet - Required: Blacksteel Armet"
 	category = list("Разное", "Донат")
 	path = /obj/item/enchantingkit/conqueror_helmet
 	ckeywhitelist = list("greenrake", "darksungwyndolin")
 	donatitem = TRUE
-*/
+
 /datum/loadout_item/donator_conqueror_armor
 	name = "Donator Kit - Conqueror's Armor - Required: Blacksteel Full-Plate"
 	category = list("Разное", "Донат")
