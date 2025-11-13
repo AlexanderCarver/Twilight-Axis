@@ -144,7 +144,7 @@
 
 /obj/item/enchantingkit/conqueror_armor
 	name = "'Conqueror's Armor' morphing elixir"
-	target_items = list(/obj/item/clothing/suit/roguetown/armor/plate/modern/blacksteel_full_plate)
+	target_items = list(/obj/item/clothing/suit/roguetown/armor/plate/full/blacksteel/modern)
 	result_item = /obj/item/clothing/suit/roguetown/armor/plate/modern/conquerorarmor
 
 /obj/item/enchantingkit/conqueror_gloves
